@@ -1,0 +1,12 @@
+# Exclude large/model artifacts
+models/
+output/
+checkpoints/
+
+# Common
+*.log
+*.tmp
+.DS_Store
+node_modules/
+.env
+.env.*

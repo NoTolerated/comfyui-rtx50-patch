@@ -1,0 +1,36 @@
+# docker/comfyui/Dockerfile.gpu
+FROM nvidia/cuda:12.6.0-cudnn-runtime-ubuntu22.04
+ENV DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git wget ca-certificates python3.11 python3.11-venv python3-pip \
+    libsndfile1 libsndfile1-dev libjpeg-dev libpng-dev poppler-utils \
+    build-essential cmake pkg-config unzip && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m comfy && mkdir -p /home/comfy/checkpoints /home/comfy/output && chown -R comfy:comfy /home/comfy
+USER comfy
+WORKDIR /home/comfy
+
+RUN python3.11 -m venv .venv
+ENV PATH="/home/comfy/.venv/bin:$PATH"
+RUN pip install --upgrade pip setuptools wheel
+
+# PyTorch wheel target: CUDA 12.6 (nightly/pre if stable missing)
+RUN pip install --pre --extra-index-url https://download.pytorch.org/whl/nightly/cu126 \
+    "torch>=2.8.0" "torchvision>=0.16.0" torchaudio --no-cache-dir || true
+
+# Clone ComfyUI (shallow)
+RUN git clone --depth 1 https://github.com/comfyanonymous/ComfyUI.git ComfyUI || true
+WORKDIR /home/comfy/ComfyUI
+
+RUN pip install -r requirements.txt --no-cache-dir || true
+COPY ./services/comfyui/scripts /home/comfy/ComfyUI/scripts || true
+RUN mkdir -p /home/comfy/ComfyUI/models /home/comfy/ComfyUI/output
+VOLUME ["/home/comfy/ComfyUI/models", "/home/comfy/ComfyUI/output", "/home/comfy/ComfyUI/checkpoints"]
+
+EXPOSE 8188
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s \
+  CMD wget --spider --quiet http://localhost:8188/ || exit 1
+
+CMD ["python", "main.py", "--host", "0.0.0.0", "--port", "8188"]

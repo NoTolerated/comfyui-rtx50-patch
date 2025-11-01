@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  comfyui-rtx50:
+    build:
+      context: .
+      dockerfile: docker/comfyui/Dockerfile.gpu
+    image: yourdockerhubusername/comfyui-rtx50:latest
+    container_name: comfyui-rtx50
+    runtime: nvidia
+    ports:
+      - "8188:8188"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ./models:/home/comfy/ComfyUI/models
+      - ./output:/home/comfy/ComfyUI/output
+      - ./checkpoints:/home/comfy/ComfyUI/checkpoints
+    restart: unless-stopped
+
+  ai-router:
+    image: your-ai-router-image:latest
+    environment:
+      - COMFYUI_URL=http://comfyui-rtx50:8188
+    depends_on:
+      - comfyui-rtx50
+    networks:
+      - nt_mesh
+
+networks:
+  nt_mesh:
+    external: false

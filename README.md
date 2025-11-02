@@ -2,6 +2,8 @@
 
 Public patch artifacts to run ComfyUI on RTX 50xx GPUs using CUDA 12.6 + PyTorch ≥2.8.
 
+📖 **[Documentation Map](docs/DOCUMENTATION_MAP.md)** — Complete guide to all documentation and resources.
+
 - No model weights are included. Use the download scripts to fetch models.
 - Contains GPU/CPU Dockerfiles, example compose, smoke test, and docs.
 

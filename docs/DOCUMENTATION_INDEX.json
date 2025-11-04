@@ -1,0 +1,69 @@
+{
+  "generated_at": "2025-11-01T00:00:00Z",
+  "repository": "NoTolerated/comfyui-rtx50-patch",
+  "version": "1.0",
+  "categories": {
+    "docker": [
+      {
+        "path": "docker/comfyui/Dockerfile.gpu",
+        "description": "CUDA 12.6 + PyTorch ≥2.8 GPU image"
+      },
+      {
+        "path": "docker/comfyui/Dockerfile.cpu",
+        "description": "CPU fallback image"
+      },
+      {
+        "path": "docker-compose.example.yml",
+        "description": "Example stack (ComfyUI + ai-router)"
+      }
+    ],
+    "scripts": [
+      {
+        "path": "services/comfyui/scripts/test_torch_gpu.py",
+        "description": "CUDA smoke test"
+      },
+      {
+        "path": "scripts/download-models.ps1",
+        "description": "PowerShell model downloader"
+      },
+      {
+        "path": "scripts/download-models.sh",
+        "description": "Bash model downloader"
+      }
+    ],
+    "docs": [
+      {
+        "path": "docs/DOCUMENTATION_MAP.md",
+        "description": "Full documentation map and navigation guide"
+      },
+      {
+        "path": "docs/COMFYUI_GPU_COMPATIBILITY_ISSUE.md",
+        "description": "RTX 50xx fix guide"
+      },
+      {
+        "path": "docs/COMPATIBILITY.md",
+        "description": "GPU compatibility matrix"
+      },
+      {
+        "path": "docs/COMFYUI_TODO.md",
+        "description": "UNFINISHED TODOS (must remain unchanged)"
+      }
+    ],
+    "build_and_ci": [
+      {
+        "path": "BUILD_STATUS.md",
+        "description": "Build/test status and deltas"
+      },
+      {
+        "path": ".github/workflows/build-and-push.yml",
+        "description": "Manual Docker build & push"
+      }
+    ],
+    "root": [
+      {
+        "path": "README.md",
+        "description": "Project README with quick start guide"
+      }
+    ]
+  }
+}

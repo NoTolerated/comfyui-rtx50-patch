@@ -25,8 +25,7 @@ RUN git clone --depth 1 https://github.com/comfyanonymous/ComfyUI.git ComfyUI ||
 WORKDIR /home/comfy/ComfyUI
 
 RUN pip install -r requirements.txt --no-cache-dir || true
-COPY ./services/comfyui/scripts /home/comfy/ComfyUI/scripts || true
-RUN mkdir -p /home/comfy/ComfyUI/models /home/comfy/ComfyUI/output
+RUN mkdir -p /home/comfy/ComfyUI/models /home/comfy/ComfyUI/output /home/comfy/ComfyUI/scripts
 VOLUME ["/home/comfy/ComfyUI/models", "/home/comfy/ComfyUI/output", "/home/comfy/ComfyUI/checkpoints"]
 
 EXPOSE 8188
